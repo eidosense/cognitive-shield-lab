@@ -59,13 +59,100 @@ const PRESET_CASE_STUDIES = [
   }
 ];
 
+const DEFAULT_INITIAL_ANALYSIS: AnalysisResult = {
+  cmiScore: 72,
+  threatLevel: 'High / Coercive',
+  primaryObjective: 'Bypassing Critical Deliberation, Emotional Resonance Capture, and Mimetic Priming (Prefrontal Cortex Bypass).',
+  timelineFrames: [
+    {
+      timestamp: '00:02s',
+      second: 2,
+      targetOrgan: 'cardio',
+      detectedMechanism: 'Loudness Overcompression & High-Contrast Visual Palette',
+      biochemicalSomaticImpact: 'Autonomic sympathetic arousal; rapid heart-rate elevation and peripheral vasoconstriction.',
+      severity: 7.5,
+    },
+    {
+      timestamp: '00:08s',
+      second: 8,
+      targetOrgan: 'brain',
+      detectedMechanism: 'Rapid Visual Cut (<2.1s) & Central Gaze Framing',
+      biochemicalSomaticImpact: 'Mirror neuron hyper-activation; prefrontal cortex analytical fatigue and fragmented cognitive filtering.',
+      severity: 8.0,
+    },
+    {
+      timestamp: '00:16s',
+      second: 16,
+      targetOrgan: 'infrasound',
+      detectedMechanism: '40-80 Hz Rhythmic Sub-Bass Pulse & Vocal Autotune Saturation',
+      biochemicalSomaticImpact: 'Neural phase-locking entrainment forcing cardiac synchronization; synthetic vocal tone bypasses skeptical evaluation.',
+      severity: 7.2,
+    },
+    {
+      timestamp: '00:24s',
+      second: 24,
+      targetOrgan: 'gut',
+      detectedMechanism: 'Cyclic 4-Bar Repetition Loop & Status-Mimicry Gestures',
+      biochemicalSomaticImpact: 'Vagus nerve suppression, visceral tension, and dopaminergic reward-seeking priming.',
+      severity: 7.0,
+    },
+  ],
+  infrasoundBrainwaveMetrics: {
+    detectedInfrasoundZone: '40-80 Hz Sub-Bass Band with transient 7-8 Hz resonant coupling',
+    infrasoundSeverity: 7.5,
+    entrainedBrainwave: 'Alpha (8-12 Hz) & Beta (15-22 Hz) Mixed Entrainment',
+    binauralPacingHazard: 6.8,
+    vestibularDisorientation: 5.5,
+    acousticWeaponProfile: 'Standard Digital Loudness War / Brickwall Limiting acoustic fatigue',
+  },
+  somaticBiochemicalImpact: {
+    amygdalaThreat: 7.8,
+    prefrontalInhibition: 8.2,
+    cortisolStressSurge: 7.5,
+    dopamineExploitation: 8.5,
+    cardiovascularStrain: 7.4,
+    gutBrainTension: 6.8,
+    summaryBiochemical: 'Dopaminergic reward pursuit combined with acute sympathetic noradrenaline surge.',
+    summaryConsciousness: 'Analytical prefrontal bypass inducing passive mimetic suggestibility and trance absorption.',
+    affectedOrganHotspots: ['Prefrontal Cortex', 'Amygdala', 'Cardiovascular Node', 'Vagus Nerve / Enteric Axis'],
+  },
+  countermeasures: [
+    'Watch the video with sound completely muted to observe the artificial visual pacing and status postures without auditory hypnosis.',
+    'Listen to the audio with screen off; evaluate whether words have rational factual value or are empty rhythmic loops.',
+    'Ask: "What specific visceral emotion is this rapid cut sequence and compressed bass trying to elicit in my body?"',
+  ],
+  markdownReport: `### 🛡️ Cognitive Shield Analysis Report
+**Target Artifact:** Modern Digital Video / Music Production & Cultural Artifact  
+**Developed by:** Cognitive Shield Lab  
+
+#### 1. Executive Summary & Scoring
+- **Cognitive Manipulation Index (CMI):** 72/100 — [Threat Level: High / Coercive]
+- **Primary Objective:** Bypassing Critical Deliberation, Emotional Resonance Capture, and Mimetic Priming (Prefrontal Cortex Bypass).
+- **Target Vulnerability:** Dopaminergic reward-seeking, mirror-neuron resonance, and prefrontal cognitive fatigue.
+
+#### 2. Vector Breakdown
+- **Acoustic & Audio Elements:** Industry-standard 440 Hz carrier tuning with brickwall limiting. Sub-audible 40–80 Hz rhythmic pulse induces autonomic sympathetic arousal (cardiac entrainment). Hyper-compressed vocal autotune removes natural vocal flaws to craft hypnotic smoothness.
+- **Visuals, Chromatics & Semiotics:** Saturated warm tones (red/orange desire triggers) combined with cold neon tones (synthetic authority). Central composition and close-up gaze trigger mirror neuron simulation.
+- **Speech & Linguistic Traps:** Cyclic chant loops (semantic satiation), thought-terminating slogans, and cognitive ease exploitation.
+- **Behavioral & Non-Verbal Dynamics:** Hyper-confidence micro-postures designed to prime status mimicry and subconscious belonging.
+
+#### 3. Mathematical & Algorithmic Rigor
+- **Cuts-Per-Minute (CPM):** Average scene transition every 1.8 – 2.4 seconds, outrunning deliberate rational processing.
+- **Repetition Cycles:** 4 and 8-bar cyclic patterns inducing neural phase locking.
+
+#### 4. Cognitive Countermeasures
+- Watch video completely muted to decouple visual acting from acoustic entrainment.
+- Listen to audio alone without video to expose superficial semantic slogans.
+- Ask: "What bodily arousal state is this media attempting to manufacture?"`
+};
+
 export default function Home() {
-  const [artifactTitle, setArtifactTitle] = useState('');
-  const [promptInput, setPromptInput] = useState('');
+  const [artifactTitle, setArtifactTitle] = useState('Modern Digital Video / Music Production');
+  const [promptInput, setPromptInput] = useState(PRESET_CASE_STUDIES[0].content);
   const [videoUrlInput, setVideoUrlInput] = useState('');
   const [mediaFile, setMediaFile] = useState<{ data: string; mimeType: string; name: string } | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
+  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(DEFAULT_INITIAL_ANALYSIS);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [activeTab, setActiveTab] = useState<'3d' | 'report'>('3d');

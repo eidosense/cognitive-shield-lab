@@ -87,6 +87,29 @@ export default function HumanBody3DView({
     return 0x3fb950; // Green (Minimal)
   };
 
+  const somaticRef = useRef(somaticData);
+  const acousticRef = useRef(acousticData);
+
+  useEffect(() => {
+    somaticRef.current = somaticData;
+    acousticRef.current = acousticData;
+    if (brainMeshRef.current && somaticData) {
+      const col = getThreatColor(somaticData.amygdalaThreat);
+      (brainMeshRef.current.material as THREE.MeshPhysicalMaterial).color.set(col);
+      (brainMeshRef.current.material as THREE.MeshPhysicalMaterial).emissive.set(col);
+    }
+    if (heartMeshRef.current && somaticData) {
+      const col = getThreatColor(somaticData.cardiovascularStrain);
+      (heartMeshRef.current.material as THREE.MeshPhysicalMaterial).color.set(col);
+      (heartMeshRef.current.material as THREE.MeshPhysicalMaterial).emissive.set(col);
+    }
+    if (gutMeshRef.current && somaticData) {
+      const col = getThreatColor(somaticData.gutBrainTension);
+      (gutMeshRef.current.material as THREE.MeshPhysicalMaterial).color.set(col);
+      (gutMeshRef.current.material as THREE.MeshPhysicalMaterial).emissive.set(col);
+    }
+  }, [somaticData, acousticData]);
+
   useEffect(() => {
     if (!containerRef.current) return;
     const container = containerRef.current;
@@ -355,8 +378,8 @@ export default function HumanBody3DView({
     // -------------------------------------------------------------
     const brainGeo = new THREE.SphereGeometry(0.22, 16, 16);
     const brainMat = new THREE.MeshPhysicalMaterial({
-      color: getThreatColor(somaticData?.amygdalaThreat || 2),
-      emissive: getThreatColor(somaticData?.amygdalaThreat || 2),
+      color: getThreatColor(somaticRef.current?.amygdalaThreat || 2),
+      emissive: getThreatColor(somaticRef.current?.amygdalaThreat || 2),
       emissiveIntensity: 0.7,
       roughness: 0.1,
       metalness: 0.8,
@@ -368,8 +391,8 @@ export default function HumanBody3DView({
 
     const heartGeo = new THREE.DodecahedronGeometry(0.16, 0);
     const heartMat = new THREE.MeshPhysicalMaterial({
-      color: getThreatColor(somaticData?.cardiovascularStrain || 3),
-      emissive: getThreatColor(somaticData?.cardiovascularStrain || 3),
+      color: getThreatColor(somaticRef.current?.cardiovascularStrain || 3),
+      emissive: getThreatColor(somaticRef.current?.cardiovascularStrain || 3),
       emissiveIntensity: 0.7,
       roughness: 0.2,
       metalness: 0.7,
@@ -381,8 +404,8 @@ export default function HumanBody3DView({
 
     const gutGeo = new THREE.TorusKnotGeometry(0.18, 0.06, 64, 16, 2, 3);
     const gutMat = new THREE.MeshPhysicalMaterial({
-      color: getThreatColor(somaticData?.gutBrainTension || 3),
-      emissive: getThreatColor(somaticData?.gutBrainTension || 3),
+      color: getThreatColor(somaticRef.current?.gutBrainTension || 3),
+      emissive: getThreatColor(somaticRef.current?.gutBrainTension || 3),
       emissiveIntensity: 0.6,
       metalness: 0.5,
       roughness: 0.3,
@@ -435,14 +458,14 @@ export default function HumanBody3DView({
         }
         electronParticles.geometry.attributes.position.needsUpdate = true;
 
-        const infraIntensity = (acousticData?.infrasoundSeverity || 4) * 0.15;
+        const infraIntensity = (acousticRef.current?.infrasoundSeverity || 4) * 0.15;
         infrasoundRingsRef.current.forEach((ring, idx) => {
           const waveScale = 1.0 + Math.sin(time * 7.5 + idx * 0.8) * (0.08 + infraIntensity * 0.05);
           ring.scale.set(waveScale, waveScale, waveScale);
         });
 
         if (heartMeshRef.current) {
-          const heartRate = 1.8 + ((somaticData?.cardiovascularStrain || 3) * 0.4);
+          const heartRate = 1.8 + ((somaticRef.current?.cardiovascularStrain || 3) * 0.4);
           const heartScale = 1.0 + Math.sin(time * heartRate * Math.PI) * 0.12;
           heartMeshRef.current.scale.set(heartScale, heartScale, heartScale);
         }
