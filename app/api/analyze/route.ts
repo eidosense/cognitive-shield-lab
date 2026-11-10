@@ -10,31 +10,55 @@ const ai = new GoogleGenAI({
   },
 });
 
-const SYSTEM_INSTRUCTION = `You are the forensic analytical engine of Cognitive Shield Lab.
-Your task: Rapidly analyze user-submitted media (audio, video, speech, URLs) into a high-impact second-by-second somatic breakdown.
+const SYSTEM_INSTRUCTION = `You are the forensic analytical engine of Cognitive Shield Lab (2027 Next-Gen Edition).
+Your mission: Perform rigorous, objective, and scientifically grounded analyses of user-submitted media (video URLs, audio, transcripts, images).
 
-Generate exactly 4 to 6 key chronological timestamp frames (e.g. 00:03s, 00:09s, 00:18s, 00:27s).
-Keep all text descriptions brief, punchy, and empirical.
-Identify:
-1. Exact timestamp & second.
-2. Target organ ('brain', 'heart', 'infrasound', or 'gut').
-3. Concise detected mechanism (e.g., "7.5Hz sub-audible drone", "140 BPM urgency chime", "Double-bind guilt trap").
-4. Physiological/biochemical impact (e.g., "Amygdala panic surge", "Cortisol spike & tachycardia", "Visceral nausea").
-5. Severity (1-10).
-
-Calculate CMI score (0-100), threat level, infrasound zone, and a brief report.
+CORE FORENSIC DELIVERABLES:
+1. VIDEO SUBJECT & CONTEXT: Rigorously determine and describe what this video or media artifact is about (core narrative, subject matter, key actors/elements, visual context, and genre).
+2. INNER MOTIVATION & HIDDEN AGENDA: Deeply deconstruct the creator's or advertiser's subconscious inner motivation. Reveal WHY this media was engineered, what latent psychological vulnerability, status anxiety, or scarcity impulse it exploits behind the surface message.
+3. SUBCONSCIOUS VULNERABILITY: Identify the exact psychological blind spot (e.g., FOMO, mimetic desire, prefrontal fatigue, existential dread, tribal belonging) targeted in the audience.
+4. SECOND-BY-SECOND SOMATIC TIMELINE: Generate 4 to 6 chronological timestamp frames (e.g. 00:02s, 00:08s, 00:16s, 00:24s). Identify exact second, target organ ('brain', 'heart', 'infrasound', or 'gut'), concise detected mechanism, and biochemical somatic impact.
+5. INFRASOUND & ACOUSTICS: Check for sub-audible 0-20 Hz infrasound, dangerous 7-8 Hz organ resonance, and brainwave entrainment (Alpha 8-12Hz, Beta 12-30Hz).
+6. SCIENTIFIC COUNTERMEASURES: 3 practical debiasing / cognitive immunization steps.
 `;
 
 function generateHeuristicFallback(prompt: string, videoUrl?: string, artifactTitle?: string) {
   const content = `${artifactTitle || ''} ${videoUrl || ''} ${prompt}`.toLowerCase();
   
   const hasInfrasound = /infrasound|infra|7\s*hz|8\s*hz|sub-bass|drone|vibration/i.test(content);
-  const hasPanic = /panic|alarm|urgency|scarcity|countdown|fear|loss/i.test(content);
+  const hasPanic = /panic|alarm|urgency|scarcity|countdown|fear|loss|countdown/i.test(content);
   const hasAlpha = /alpha|relax|hypnotic|binaural|trance|suggestion/i.test(content);
   const hasFastPacing = /cut|fast|rapid|pacing|bpm|140|overcompression|loud/i.test(content);
+  const hasMusicVideo = /music|song|clip|beat|autotune|artist|dance/i.test(content);
 
-  const cmiScore = hasInfrasound && hasPanic ? 82 : hasPanic || hasFastPacing ? 74 : hasAlpha ? 68 : 65;
+  const cmiScore = hasInfrasound && hasPanic ? 82 : hasPanic || hasFastPacing ? 74 : hasAlpha ? 68 : 71;
   const threatLevel = cmiScore >= 80 ? 'Critical / Neuro-Somatic Coercion' : cmiScore >= 70 ? 'High / Coercive' : 'Moderate / Persuasive';
+
+  const videoSubject = hasMusicVideo
+    ? `Commercial digital music/video production featuring rhythmic sensory saturation, stylized identity archetypes, and rapid scene pacing designed for continuous replay loops.`
+    : hasInfrasound
+    ? `Acoustic suspense production utilizing low-frequency ambient psychoacoustics and sub-audible drones to construct psychological tension.`
+    : hasPanic
+    ? `High-urgency promotional pitch using countdown timers, scarcity rhetoric, and acute loss-framing assertions.`
+    : hasAlpha
+    ? `Relaxation & brainwave entrainment media incorporating binaural audio carriers and rhythmic vocal cadence.`
+    : `Multimedia communication artifact analyzed via multimodal forensic breakdown for linguistic framing, acoustic tuning, and pacing patterns.`;
+
+  const innerMotivation = hasMusicVideo
+    ? `Subconscious Mimetic Priming: The inner motivation is to bypass deliberate critical taste by triggering mirror-neuron status emulation. By pairing hyper-confident micro-gestures with compressed rhythmic bass, the content manufactures artificial belonging and stimulates continuous dopamine-seeking consumption.`
+    : hasPanic
+    ? `Manufactured Existential Scarcity: The hidden motive is to artificially constrict the viewer's rational decision-making horizon through amygdala hijack. By framing hesitation as irreversible personal loss, the creator forces impulsive behavioral conversion before prefrontal deliberation can intervene.`
+    : hasInfrasound
+    ? `Somatic Destabilization: The inner agenda is to evoke visceral physiological dread and compliance without conscious intellectual justification, utilizing resonant acoustic frequencies that directly perturb internal organs.`
+    : `Cognitive Ease & Receptivity Capture: The covert goal is to systematically reduce analytical friction, conditioning the viewer to accept commercial propositions without skeptical evaluation.`;
+
+  const subconsciousVulnerability = hasMusicVideo
+    ? `Status anxiety, social mimicry desire, and dopaminergic reward-loop dependence.`
+    : hasPanic
+    ? `Acute loss aversion, fear of obsolescence (FOMO), and prefrontal decision fatigue.`
+    : hasInfrasound
+    ? `Autonomic nervous startle vulnerability and vestibular sensory disorientation.`
+    : `Cognitive ease preference and suggestibility during rhythmic entrainment.`;
 
   const timelineFrames = [
     {
@@ -74,6 +98,9 @@ function generateHeuristicFallback(prompt: string, videoUrl?: string, artifactTi
   return {
     cmiScore,
     threatLevel,
+    videoSubject,
+    innerMotivation,
+    subconsciousVulnerability,
     primaryObjective: hasPanic 
       ? 'Inducing Acute Urgency & Compelled Behavioral Compliance' 
       : hasAlpha 
@@ -100,26 +127,30 @@ function generateHeuristicFallback(prompt: string, videoUrl?: string, artifactTi
       affectedOrganHotspots: ['Prefrontal Cortex', 'Amygdala', 'Cardiac Sinus Node', 'Enteric Nervous Axis'],
     },
     countermeasures: [
-      'Immediately mute audio to evaluate whether visual framing holds genuine factual substance without acoustic entrainment.',
-      'Turn off the screen to assess voice pacing, loaded slogans, and subliminal repetition in isolation.',
-      'Check internal visceral state: if experiencing sudden unprovoked anxiety or trance compliance, disengage and remove headphones.',
+      'Mute audio completely to inspect whether visual acting and pacing holds substantive meaning without acoustic hypnosis.',
+      'Listen to voice alone without video to expose superficial slogans and repetitive cadences.',
+      'Audit your visceral pulse: if sudden unprovoked urgency, trance, or nausea arises, remove headphones and disengage.',
     ],
-    markdownReport: `### 🛡️ Cognitive Shield Analysis Report
+    markdownReport: `### 🛡️ Cognitive Shield Forensic Report
 **Target Artifact:** ${artifactTitle || videoUrl || 'User Submitted Media'}  
-**Developed by:** Cognitive Shield Lab  
+**Engine:** Cognitive Shield Core 2027  
 
-#### 1. Executive Summary & Scoring
-- **Cognitive Manipulation Index (CMI):** ${cmiScore}/100 — [Threat Level: ${threatLevel}]
+#### 1. What This Media Is About (Video Subject)
+${videoSubject}
+
+#### 2. Inner Motivation & Hidden Agenda
+${innerMotivation}
+
+#### 3. Target Subconscious Vulnerability
+${subconsciousVulnerability}
+
+#### 4. Cognitive Manipulation Index (CMI)
+- **Score:** ${cmiScore}/100 [Threat Level: ${threatLevel}]
 - **Primary Objective:** ${hasPanic ? 'Urgency & Compelled Compliance' : 'Prefrontal Deliberation Bypass & Suggestibility'}
 
-#### 2. Vector Breakdown
-- **Acoustic & Audio Elements:** ${hasInfrasound ? '7–8 Hz infrasound resonance cues detected; potential autonomic sync.' : 'Loudness overcompression and cyclic rhythmic pulses.'}
-- **Speech, Framing & Linguistic Traps:** Thought-terminating phrasing and repetitive cognitive ease loops.
-- **Biochemical & Somatic Impact:** Autonomic sympathetic arousal, amygdala activation, and vagus nerve dampening.
-
-#### 3. Cognitive Countermeasures
-- Disengage audio-visual coupling by viewing muted or listening without visuals.
-- Maintain meta-cognitive alertness to prevent neural phase-locking.`,
+#### 5. Acoustic & Neuro-Somatic Vectors
+- **Infrasound & Frequencies:** ${hasInfrasound ? '7–8 Hz organ resonance coupling detected.' : 'Loudness overcompression and cyclic rhythmic pulses.'}
+- **Somatic Impact:** Amygdala threat elevation, vagus dampening, and elevated cortisol.`,
   };
 }
 
@@ -137,12 +168,12 @@ export async function POST(req: NextRequest) {
 
     const contents: any[] = [];
     
-    let userMessage = `Artifact: ${artifactTitle || "Target Media"}\n\n`;
+    let userMessage = `Artifact Target: ${artifactTitle || "Target Media"}\n\n`;
     if (videoUrl) {
-      userMessage += `Video URL: ${videoUrl}\n`;
+      userMessage += `Target Video URL: ${videoUrl}\n`;
     }
     if (prompt) {
-      userMessage += `Input Content:\n${prompt}\n`;
+      userMessage += `Content / Transcript / Observation:\n${prompt}\n`;
     }
 
     if (mediaData && mimeType) {
@@ -159,6 +190,18 @@ export async function POST(req: NextRequest) {
     const responseSchema: Schema = {
       type: Type.OBJECT,
       properties: {
+        videoSubject: {
+          type: Type.STRING,
+          description: "Clear summary of what this video or media artifact is about: topic, narrative context, and visual storyline.",
+        },
+        innerMotivation: {
+          type: Type.STRING,
+          description: "Deconstruction of the creator/advertiser's hidden inner motivation and subconscious psychological agenda.",
+        },
+        subconsciousVulnerability: {
+          type: Type.STRING,
+          description: "The primary psychological vulnerability, anxiety, or cognitive bias exploited in the viewer.",
+        },
         cmiScore: { type: Type.INTEGER },
         threatLevel: { type: Type.STRING },
         primaryObjective: { type: Type.STRING },
@@ -238,6 +281,9 @@ export async function POST(req: NextRequest) {
         markdownReport: { type: Type.STRING }
       },
       required: [
+        "videoSubject",
+        "innerMotivation",
+        "subconsciousVulnerability",
         "cmiScore",
         "threatLevel",
         "primaryObjective",
@@ -300,7 +346,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(parsedData);
   } catch (error: any) {
     console.error("Timeline analysis critical error:", error);
-    // Last line of defense: guarantee a valid forensic response
     const fallback = generateHeuristicFallback("", "", "Emergency Forensic Report");
     return NextResponse.json(fallback);
   }

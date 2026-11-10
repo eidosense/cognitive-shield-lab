@@ -78,35 +78,35 @@ export default function ScientificCharts({
       label: 'Sub-Infra',
       intensity: acousticData?.infrasoundSeverity ? acousticData.infrasoundSeverity * 7 : 35,
       hazard: 'Low',
-      color: '#94a3b8',
+      color: '#64748b',
     },
     {
       band: '7-8 Hz',
       label: 'Dangerous Organ Resonance',
       intensity: acousticData?.infrasoundSeverity ? Math.min(100, acousticData.infrasoundSeverity * 12) : 88,
       hazard: 'Severe',
-      color: '#ef4444', // Red: Resonance with Alpha & visceral organs
+      color: '#f43f5e', // Coral red
     },
     {
       band: '8-12 Hz',
       label: 'Alpha (Suggestibility)',
       intensity: (somaticData?.prefrontalInhibition || 7) * 9.5,
       hazard: 'High',
-      color: '#f59e0b', // Amber: Hypnotic entrainment
+      color: '#f59e0b', // Amber
     },
     {
       band: '12-30 Hz',
       label: 'Beta (Stress/Alarm)',
       intensity: (somaticData?.amygdalaThreat || 7) * 9.2,
       hazard: 'High',
-      color: '#3b82f6', // Blue: High cognitive tension
+      color: '#06b6d4', // Cyan
     },
     {
       band: '40-80 Hz',
       label: 'Sub-Bass (Entrainment)',
       intensity: (somaticData?.cardiovascularStrain || 6) * 10.5,
       hazard: 'Moderate',
-      color: '#6366f1', // Indigo: Autonomic cardiac locking
+      color: '#3b82f6', // Blue
     },
   ];
 
@@ -142,32 +142,32 @@ export default function ScientificCharts({
   return (
     <div className="flex flex-col gap-5">
       {/* Chart 1: Autonomic Biometric Stress Curves */}
-      <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-xs">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-3.5 mb-4">
+      <div className="bg-[#0e1320] border border-slate-800/90 rounded-2xl p-5 shadow-xl">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-3.5 mb-4">
           <div>
             <div className="flex items-center gap-2">
-              <Activity className="w-4 h-4 text-blue-600" />
-              <h3 className="text-sm font-semibold text-slate-900 tracking-tight">
+              <Activity className="w-4 h-4 text-cyan-400" />
+              <h3 className="text-sm font-semibold text-slate-100 tracking-tight">
                 Autonomic Biometric Stress Curve
               </h3>
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-slate-400 mt-0.5">
               Fluctuations in heart rate, cortisol proxy, and neural stress ratio across timeline
             </p>
           </div>
 
           {/* Active telemetry readouts */}
-          <div className="flex items-center gap-3 text-xs">
-            <div className="px-3 py-1.5 rounded-lg bg-rose-50 border border-rose-100 text-rose-700 font-mono">
-              <span className="text-rose-500 mr-1.5 font-sans">Heart Rate:</span>
+          <div className="flex items-center gap-2.5 text-xs">
+            <div className="px-3 py-1.5 rounded-lg bg-rose-950/40 border border-rose-800/50 text-rose-300 font-mono">
+              <span className="text-rose-400 mr-1.5 font-sans">Heart Rate:</span>
               <strong>{activePoint?.heartRate} BPM</strong>
             </div>
-            <div className="px-3 py-1.5 rounded-lg bg-amber-50 border border-amber-100 text-amber-700 font-mono">
-              <span className="text-amber-500 mr-1.5 font-sans">Cortisol:</span>
+            <div className="px-3 py-1.5 rounded-lg bg-amber-950/40 border border-amber-800/50 text-amber-300 font-mono">
+              <span className="text-amber-400 mr-1.5 font-sans">Cortisol:</span>
               <strong>{activePoint?.cortisol} µg/dL</strong>
             </div>
-            <div className="px-3 py-1.5 rounded-lg bg-blue-50 border border-blue-100 text-blue-700 font-mono">
-              <span className="text-blue-500 mr-1.5 font-sans">Beta/Alpha:</span>
+            <div className="px-3 py-1.5 rounded-lg bg-cyan-950/40 border border-cyan-800/50 text-cyan-300 font-mono">
+              <span className="text-cyan-400 mr-1.5 font-sans">Beta/Alpha:</span>
               <strong>{activePoint?.betaAlphaRatio}x</strong>
             </div>
           </div>
@@ -186,41 +186,41 @@ export default function ScientificCharts({
             >
               <defs>
                 <linearGradient id="modernHeart" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ef4444" stopOpacity={0.25} />
-                  <stop offset="95%" stopColor="#ef4444" stopOpacity={0.0} />
+                  <stop offset="5%" stopColor="#f43f5e" stopOpacity={0.35} />
+                  <stop offset="95%" stopColor="#f43f5e" stopOpacity={0.0} />
                 </linearGradient>
                 <linearGradient id="modernCortisol" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.2} />
+                  <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.3} />
                   <stop offset="95%" stopColor="#f59e0b" stopOpacity={0.0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
               <XAxis
                 dataKey="timestamp"
-                stroke="#94a3b8"
+                stroke="#64748b"
                 fontSize={11}
                 tickLine={false}
-                axisLine={{ stroke: '#e2e8f0' }}
+                axisLine={{ stroke: '#334155' }}
               />
               <YAxis
-                stroke="#94a3b8"
+                stroke="#64748b"
                 fontSize={11}
                 domain={[60, 130]}
                 tickLine={false}
-                axisLine={{ stroke: '#e2e8f0' }}
+                axisLine={{ stroke: '#334155' }}
               />
               <Tooltip
                 content={({ active, payload }) => {
                   if (active && payload && payload.length) {
                     const d = payload[0].payload;
                     return (
-                      <div className="bg-slate-900 text-white p-3 rounded-xl text-xs shadow-xl border border-slate-800">
-                        <div className="font-semibold text-blue-400 mb-1">
+                      <div className="bg-[#080c14] text-white p-3 rounded-xl text-xs shadow-2xl border border-slate-700">
+                        <div className="font-semibold text-cyan-400 mb-1">
                           {d.timestamp} · Target: {d.organ.toUpperCase()}
                         </div>
-                        <div className="text-rose-300 font-mono">Heart Rate: {d.heartRate} BPM</div>
-                        <div className="text-amber-300 font-mono">Cortisol Surge: {d.cortisol} µg/dL</div>
-                        <div className="text-blue-300 font-mono">Neural Tension: {d.betaAlphaRatio}x</div>
+                        <div className="text-rose-400 font-mono">Heart Rate: {d.heartRate} BPM</div>
+                        <div className="text-amber-400 font-mono">Cortisol Surge: {d.cortisol} µg/dL</div>
+                        <div className="text-cyan-300 font-mono">Neural Tension: {d.betaAlphaRatio}x</div>
                         <div className="text-slate-400 text-[11px] mt-1.5 pt-1.5 border-t border-slate-800">
                           {d.mechanism}
                         </div>
@@ -233,7 +233,7 @@ export default function ScientificCharts({
               <Area
                 type="monotone"
                 dataKey="heartRate"
-                stroke="#ef4444"
+                stroke="#f43f5e"
                 strokeWidth={2.5}
                 fillOpacity={1}
                 fill="url(#modernHeart)"
@@ -254,20 +254,20 @@ export default function ScientificCharts({
       {/* Two-Column Grid: Frequency Spectrum (Bar) & Somatic Vulnerability (Radar) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {/* Chart 2: Frequency Spectrum & 7-8 Hz Infrasound Hazard */}
-        <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
-          <div className="border-b border-slate-100 pb-3 mb-3">
+        <div className="bg-[#0e1320] border border-slate-800/90 rounded-2xl p-5 shadow-xl flex flex-col justify-between">
+          <div className="border-b border-slate-800 pb-3 mb-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Radio className="w-4 h-4 text-rose-500" />
-                <h4 className="text-sm font-semibold text-slate-900 tracking-tight">
+                <Radio className="w-4 h-4 text-rose-400" />
+                <h4 className="text-sm font-semibold text-slate-100 tracking-tight">
                   Acoustic & Infrasound Spectrum
                 </h4>
               </div>
-              <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-100">
+              <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-rose-950/60 text-rose-300 border border-rose-800/60">
                 7–8 Hz Peak Hazard
               </span>
             </div>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-400 mt-1">
               Internal organ vibration coupling and brainwave entrainment frequencies
             </p>
           </div>
@@ -275,16 +275,16 @@ export default function ScientificCharts({
           <div className="w-full h-48">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={frequencyBands} margin={{ top: 10, right: 10, left: -25, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
-                <XAxis dataKey="band" stroke="#94a3b8" fontSize={11} tickLine={false} axisLine={{ stroke: '#e2e8f0' }} />
-                <YAxis stroke="#94a3b8" fontSize={11} domain={[0, 100]} tickLine={false} axisLine={{ stroke: '#e2e8f0' }} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
+                <XAxis dataKey="band" stroke="#64748b" fontSize={11} tickLine={false} axisLine={{ stroke: '#334155' }} />
+                <YAxis stroke="#64748b" fontSize={11} domain={[0, 100]} tickLine={false} axisLine={{ stroke: '#334155' }} />
                 <Tooltip
                   content={({ active, payload }) => {
                     if (active && payload && payload.length) {
                       const d = payload[0].payload;
                       return (
-                        <div className="bg-slate-900 text-white p-2.5 rounded-lg text-xs shadow-lg">
-                          <div className="font-semibold text-slate-200">{d.band} · {d.label}</div>
+                        <div className="bg-[#080c14] text-white p-2.5 rounded-lg text-xs shadow-xl border border-slate-700">
+                          <div className="font-semibold text-cyan-300">{d.band} · {d.label}</div>
                           <div className="text-rose-400 font-mono mt-0.5">Energy Level: {d.intensity}%</div>
                           <div className="text-slate-400 text-[10px] mt-0.5">Hazard: {d.hazard}</div>
                         </div>
@@ -302,27 +302,27 @@ export default function ScientificCharts({
             </ResponsiveContainer>
           </div>
 
-          <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-            <span>7-8 Hz = Alpha & visceral organ resonance</span>
-            <span className="font-medium text-slate-700">Ref: Bioacoustics Lab</span>
+          <div className="mt-2 pt-2 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
+            <span>7–8 Hz = Alpha & visceral organ resonance</span>
+            <span className="font-medium text-slate-300">Ref: Bioacoustics Lab</span>
           </div>
         </div>
 
         {/* Chart 3: Neuro-Somatic Vulnerability Radar */}
-        <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-xs flex flex-col justify-between">
-          <div className="border-b border-slate-100 pb-3 mb-1">
+        <div className="bg-[#0e1320] border border-slate-800/90 rounded-2xl p-5 shadow-xl flex flex-col justify-between">
+          <div className="border-b border-slate-800 pb-3 mb-1">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <ShieldAlert className="w-4 h-4 text-indigo-600" />
-                <h4 className="text-sm font-semibold text-slate-900 tracking-tight">
+                <ShieldAlert className="w-4 h-4 text-cyan-400" />
+                <h4 className="text-sm font-semibold text-slate-100 tracking-tight">
                   Neuro-Somatic Vulnerability Radar
                 </h4>
               </div>
-              <span className="text-[11px] font-medium text-slate-500">
+              <span className="text-[11px] font-medium text-slate-400 font-mono">
                 Scale 0–10
               </span>
             </div>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-slate-400 mt-1">
               Multi-axis physiological impact profile
             </p>
           </div>
@@ -330,24 +330,24 @@ export default function ScientificCharts({
           <div className="w-full h-48">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart data={radarData} outerRadius="75%">
-                <PolarGrid stroke="#e2e8f0" />
-                <PolarAngleAxis dataKey="subject" tick={{ fill: '#64748b', fontSize: 10 }} />
-                <PolarRadiusAxis angle={30} domain={[0, 10]} stroke="#cbd5e1" tick={false} />
+                <PolarGrid stroke="#1e293b" />
+                <PolarAngleAxis dataKey="subject" tick={{ fill: '#94a3b8', fontSize: 10 }} />
+                <PolarRadiusAxis angle={30} domain={[0, 10]} stroke="#334155" tick={false} />
                 <Radar
                   name="Somatic Threat"
                   dataKey="value"
-                  stroke="#4f46e5"
-                  fill="#6366f1"
-                  fillOpacity={0.25}
+                  stroke="#06b6d4"
+                  fill="#0891b2"
+                  fillOpacity={0.35}
                   strokeWidth={2}
                 />
               </RadarChart>
             </ResponsiveContainer>
           </div>
 
-          <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+          <div className="mt-2 pt-2 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
             <span>Prefrontal & Amygdala show highest vulnerability</span>
-            <span className="font-medium text-indigo-600">Cognitive Bypass</span>
+            <span className="font-medium text-cyan-400">Cognitive Bypass</span>
           </div>
         </div>
       </div>
