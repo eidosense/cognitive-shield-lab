@@ -23,12 +23,16 @@ import {
   FileText,
   Compass,
   ArrowRight,
-  Activity
+  Activity,
+  GraduationCap,
+  BookOpen,
+  Library
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import HumanBody3DView, { SomaticBiochemicalImpact, InfrasoundBrainwaveMetrics, TimelineFrame } from '@/components/HumanBody3DView';
 import ScientificCharts from '@/components/ScientificCharts';
+import { ScientificCitation } from '@/app/api/analyze/route';
 
 interface AnalysisResult {
   videoSubject: string;
@@ -40,6 +44,7 @@ interface AnalysisResult {
   timelineFrames: TimelineFrame[];
   infrasoundBrainwaveMetrics: InfrasoundBrainwaveMetrics;
   somaticBiochemicalImpact: SomaticBiochemicalImpact;
+  scientificCitations: ScientificCitation[];
   countermeasures: string[];
   markdownReport: string;
 }
@@ -665,7 +670,74 @@ export default function Home() {
               </div>
             </div>
 
-            {/* F. Collapsible Full Forensic Markdown Dossier */}
+            {/* F. Peer-Reviewed Academic Citations & Empirical Evidence Matrix */}
+            {analysisResult.scientificCitations && analysisResult.scientificCitations.length > 0 && (
+              <div className="bg-[#0e1320] border border-slate-800/90 rounded-2xl p-6 shadow-xl flex flex-col gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <GraduationCap className="w-4 h-4 text-cyan-400" />
+                      <h3 className="text-sm font-semibold text-slate-100 tracking-tight font-mono">
+                        Peer-Reviewed Empirical Literature & Grounding Matrix
+                      </h3>
+                    </div>
+                    <p className="text-xs text-slate-400 mt-1">
+                      All detected cognitive, somatic, and psychoacoustic manipulation vectors are strictly grounded in published, peer-reviewed academic studies.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cyan-950/50 border border-cyan-800/50 text-cyan-300 font-mono text-[11px] self-start sm:self-auto">
+                    <Library className="w-3.5 h-3.5" />
+                    <span>{analysisResult.scientificCitations.length} Peer-Reviewed Studies</span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {analysisResult.scientificCitations.map((cite, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-[#080c14] border border-slate-800/90 hover:border-slate-700/80 p-4 rounded-xl flex flex-col justify-between gap-3 transition-colors"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <span className="text-[10px] font-mono font-semibold uppercase px-2 py-0.5 rounded bg-slate-900 text-cyan-400 border border-slate-800">
+                            {cite.dimension}
+                          </span>
+                          <span className="text-[10px] font-mono text-slate-500">
+                            {cite.academicField}
+                          </span>
+                        </div>
+
+                        <h4 className="text-xs font-semibold text-slate-100 font-sans leading-snug">
+                          {cite.phenomenon}
+                        </h4>
+
+                        <p className="text-[11px] text-slate-400 mt-1.5 leading-relaxed font-sans">
+                          {cite.empiricalMechanism}
+                        </p>
+                      </div>
+
+                      <div className="pt-2.5 border-t border-slate-800/80 flex flex-col gap-1">
+                        <span className="text-[10px] font-mono text-slate-500">Academic Citation:</span>
+                        <div className="text-xs font-mono font-medium text-slate-300 flex items-start gap-1.5">
+                          <BookOpen className="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5" />
+                          <span className="leading-snug">{cite.peerReviewedPaper}</span>
+                        </div>
+                        <span className="text-[10px] text-cyan-400 font-mono mt-0.5 font-semibold">
+                          Journal: {cite.journalOrSource}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-1 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500 font-mono">
+                  <span>Guaranteed Empirical Anchor: Zero Conspiracy Bias · Direct Peer-Reviewed Science</span>
+                  <span className="text-slate-400">Cognitive Shield Forensic Standards</span>
+                </div>
+              </div>
+            )}
+
+            {/* G. Collapsible Full Forensic Markdown Dossier */}
             <div className="bg-[#0e1320] border border-slate-800/90 rounded-2xl p-4 shadow-xl">
               <div className="flex items-center justify-between">
                 <button

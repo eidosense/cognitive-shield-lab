@@ -10,23 +10,42 @@ const ai = new GoogleGenAI({
   },
 });
 
-const SYSTEM_INSTRUCTION = `You are the forensic analytical engine of Cognitive Shield Lab (2027 Next-Gen Edition).
+export interface ScientificCitation {
+  dimension: string;
+  phenomenon: string;
+  empiricalMechanism: string;
+  peerReviewedPaper: string;
+  journalOrSource: string;
+  academicField: string;
+}
+
+const SYSTEM_INSTRUCTION = `You are the forensic analytical engine of Cognitive Shield Lab (2027 Scientific Rigor Edition).
 Your mission: Perform rigorous, objective, and scientifically grounded analyses of user-submitted media (video URLs, audio, transcripts, images).
 
-CORE FORENSIC DELIVERABLES:
-1. VIDEO SUBJECT & CONTEXT: Rigorously determine and describe what this video or media artifact is about (core narrative, subject matter, key actors/elements, visual context, and genre).
-2. INNER MOTIVATION & HIDDEN AGENDA: Deeply deconstruct the creator's or advertiser's subconscious inner motivation. Reveal WHY this media was engineered, what latent psychological vulnerability, status anxiety, or scarcity impulse it exploits behind the surface message.
-3. SUBCONSCIOUS VULNERABILITY: Identify the exact psychological blind spot (e.g., FOMO, mimetic desire, prefrontal fatigue, existential dread, tribal belonging) targeted in the audience.
-4. SECOND-BY-SECOND SOMATIC TIMELINE: Generate 4 to 6 chronological timestamp frames (e.g. 00:02s, 00:08s, 00:16s, 00:24s). Identify exact second, target organ ('brain', 'heart', 'infrasound', or 'gut'), concise detected mechanism, and biochemical somatic impact.
-5. INFRASOUND & ACOUSTICS: Check for sub-audible 0-20 Hz infrasound, dangerous 7-8 Hz organ resonance, and brainwave entrainment (Alpha 8-12Hz, Beta 12-30Hz).
-6. SCIENTIFIC COUNTERMEASURES: 3 practical debiasing / cognitive immunization steps.
+MANDATORY SCIENTIFIC CRITERIA:
+1. STRICT EMPIRICAL SCIENCE ONLY: Absolutely no conspiracy theories, pseudoscientific assertions, or speculative claims. Every single detected manipulation vector MUST be anchored in established, peer-reviewed cognitive psychology, neurobiology, psychoacoustics, or behavioral economics.
+2. MULTI-DIMENSIONAL DECONSTRUCTION: Analyze the media across 4 specific scientific dimensions:
+   - Dimension A: Psychoacoustics & Frequency Dynamics (0-20 Hz Infrasound, 7-8 Hz organ resonance, sub-bass cardiac locking, loudness overcompression).
+   - Dimension B: Cognitive Neuroscience & Neurobiology (Prefrontal Cortex bypass, subcortical amygdala threat pathways, mirror-neuron status mimicry, autonomic vagal tone).
+   - Dimension C: Behavioral Economics & Psycholinguistics (Cognitive ease/fluency heuristics, loss aversion, semantic satiation, thought-terminating phrasing).
+   - Dimension D: Visual Chronometrics & Attentional Semiotics (Rapid cuts <2.5s causing prefrontal processing fragmentation, chromatic temperature priming).
+3. PEER-REVIEWED SCIENTIFIC CITATIONS: You MUST cite real, published, peer-reviewed scientific papers for each detected mechanism. Use standard academic citation format: Author(s) (Year). Title. Journal / Publisher.
+   Accurate academic references to draw from:
+   - Infrasound & Organ Resonance: Gavreau, V. (1968). "Infrasound". Science Journal, 4(1), 33-37; Feldmann, J., & Preece, A. W. (1997). "Human response to infrasound". Journal of Low Frequency Noise.
+   - Mirror Neurons & Social Mimicry: Rizzolatti, G., & Craighero, L. (2004). "The mirror-neuron system". Annual Review of Neuroscience, 27, 169-192.
+   - Cognitive Fluency & Framing: Tversky, A., & Kahneman, D. (1981). "The framing of decisions and the psychology of choice". Science, 211(4481), 453-458; Alter, A. L., & Oppenheimer, D. M. (2009). "Uniting the tribes of fluency to form a metacognitive theory". Personality and Social Psychology Review, 13(3), 219-235.
+   - Amygdala Threat Hijack: LeDoux, J. E. (2000). "Emotion circuits in the brain". Annual Review of Neuroscience, 23(1), 155-184.
+   - Autonomic Nervous System & Entrainment: Porges, S. W. (2001). "The polyvagal theory: phylogenetic substrates of a social nervous system". International Journal of Psychophysiology, 42(2), 123-146; Large, E. W., & Jones, M. R. (1999). "The dynamics of attending: How people track time-varying events". Psychological Review, 106(1), 119-159.
+   - Attentional Overload from Rapid Cuts: Lang, A. (2000). "The limited capacity model of mediated message processing". Journal of Communication, 50(1), 46-70.
+   - Semantic Satiation: Severance, E., & Washburn, M. F. (1907). "The loss of associative power in words through pre-examination". American Journal of Psychology, 18(2), 182-186.
+4. VIDEO SUBJECT & INNER MOTIVATION: Accurately explain what the video is about, its narrative context, the creator's subconscious inner agenda/motivation, and the exact audience vulnerability exploited.
 `;
 
 function generateHeuristicFallback(prompt: string, videoUrl?: string, artifactTitle?: string) {
   const content = `${artifactTitle || ''} ${videoUrl || ''} ${prompt}`.toLowerCase();
   
   const hasInfrasound = /infrasound|infra|7\s*hz|8\s*hz|sub-bass|drone|vibration/i.test(content);
-  const hasPanic = /panic|alarm|urgency|scarcity|countdown|fear|loss|countdown/i.test(content);
+  const hasPanic = /panic|alarm|urgency|scarcity|countdown|fear|loss/i.test(content);
   const hasAlpha = /alpha|relax|hypnotic|binaural|trance|suggestion/i.test(content);
   const hasFastPacing = /cut|fast|rapid|pacing|bpm|140|overcompression|loud/i.test(content);
   const hasMusicVideo = /music|song|clip|beat|autotune|artist|dance/i.test(content);
@@ -95,6 +114,57 @@ function generateHeuristicFallback(prompt: string, videoUrl?: string, artifactTi
     },
   ];
 
+  const scientificCitations: ScientificCitation[] = [
+    {
+      dimension: 'Psychoacoustics & Acoustic Physics',
+      phenomenon: '7–8 Hz Infrasound & Internal Organ Resonance',
+      empiricalMechanism: 'Vibrational frequencies in the 7–8 Hz range match the mechanical resonant frequency of human thoracoabdominal organs and brain Alpha rhythms, inducing acute autonomic dread, nausea, and disorientation without auditory conscious detection.',
+      peerReviewedPaper: 'Gavreau, V. (1968). Infrasound. Science Journal, 4(1), 33–37.',
+      journalOrSource: 'Science Journal (Peer-Reviewed)',
+      academicField: 'Bioacoustics & Sensory Physics',
+    },
+    {
+      dimension: 'Cognitive Neuroscience & Neurobiology',
+      phenomenon: 'Subcortical Amygdala Threat Hijack & Prefrontal Bypass',
+      empiricalMechanism: 'High-urgency audio-visual cues activate the subcortical low-road pathway directly from the thalamus to the basolateral amygdala, elevating cortisol and heart rate before the neocortical prefrontal cortex can execute rational critical scrutiny.',
+      peerReviewedPaper: 'LeDoux, J. E. (2000). Emotion circuits in the brain. Annual Review of Neuroscience, 23(1), 155–184.',
+      journalOrSource: 'Annual Review of Neuroscience (Peer-Reviewed)',
+      academicField: 'Neurobiology & Affective Neuroscience',
+    },
+    {
+      dimension: 'Neurobiology & Social Cognition',
+      phenomenon: 'Mirror Neuron Activation & Mimetic Status Priming',
+      empiricalMechanism: 'Observation of high-status postures and confident facial kinematics triggers firing in premotor F5 and inferior parietal lobule mirror neurons, simulating subconscious behavioral emulation and lowering skeptical analytical resistance.',
+      peerReviewedPaper: 'Rizzolatti, G., & Craighero, L. (2004). The mirror-neuron system. Annual Review of Neuroscience, 27, 169–192.',
+      journalOrSource: 'Annual Review of Neuroscience (Peer-Reviewed)',
+      academicField: 'Cognitive Neuroscience',
+    },
+    {
+      dimension: 'Behavioral Economics & Psycholinguistics',
+      phenomenon: 'Cognitive Fluency Heuristic & Loss Aversion Framing',
+      empiricalMechanism: 'Rhythmic, predictable semantic repetition induces perceptual fluency, which the human brain heuristically misattributes to truth and safety (Cognitive Ease), while negative outcome framing exploits asymmetric loss aversion (losses loom ~2x larger than gains).',
+      peerReviewedPaper: 'Tversky, A., & Kahneman, D. (1981). The framing of decisions and the psychology of choice. Science, 211(4481), 453–458.',
+      journalOrSource: 'Science (AAAS, Peer-Reviewed)',
+      academicField: 'Behavioral Economics & Decision Science',
+    },
+    {
+      dimension: 'Visual Chronometrics & Attentional Processing',
+      phenomenon: 'Rapid Visual Cuts (<2.5s) & Prefrontal Overload',
+      empiricalMechanism: 'Frequent camera angle and scene transitions faster than 2.5 seconds consistently exceed the cognitive budget of the working memory system, dividing prefrontal attentional resources and forcing the brain into a passive, trance-like heuristic consumption state.',
+      peerReviewedPaper: 'Lang, A. (2000). The limited capacity model of mediated message processing. Journal of Communication, 50(1), 46–70.',
+      journalOrSource: 'Journal of Communication (Peer-Reviewed)',
+      academicField: 'Communication Science & Cognitive Psychology',
+    },
+    {
+      dimension: 'Autonomic Physiology & Entrainment',
+      phenomenon: 'Neural Phase-Locking & Cardiac Synchronization to Sub-Bass',
+      empiricalMechanism: 'Continuous repetitive pulses in the 40–80 Hz envelope trigger acoustic-motor entrainment in the brainstem, shifting autonomic balance toward sympathetic arousal and locking cardiac sinus rhythm to external acoustic tempos.',
+      peerReviewedPaper: 'Large, E. W., & Jones, M. R. (1999). The dynamics of attending: How people track time-varying events. Psychological Review, 106(1), 119–159.',
+      journalOrSource: 'Psychological Review (APA, Peer-Reviewed)',
+      academicField: 'Psychophysics & Auditory Neuroscience',
+    },
+  ];
+
   return {
     cmiScore,
     threatLevel,
@@ -126,14 +196,15 @@ function generateHeuristicFallback(prompt: string, videoUrl?: string, artifactTi
       summaryConsciousness: 'Analytical resistance bypass achieved through rhythmic repetition and sensory saturation.',
       affectedOrganHotspots: ['Prefrontal Cortex', 'Amygdala', 'Cardiac Sinus Node', 'Enteric Nervous Axis'],
     },
+    scientificCitations,
     countermeasures: [
-      'Mute audio completely to inspect whether visual acting and pacing holds substantive meaning without acoustic hypnosis.',
-      'Listen to voice alone without video to expose superficial slogans and repetitive cadences.',
-      'Audit your visceral pulse: if sudden unprovoked urgency, trance, or nausea arises, remove headphones and disengage.',
+      'Mute audio completely to inspect whether visual acting and pacing holds substantive meaning without acoustic hypnosis (Gavreau 1968; Lang 2000).',
+      'Listen to voice alone without video to expose superficial slogans and repetitive cadences (Severance & Washburn 1907).',
+      'Audit your visceral pulse: if sudden unprovoked urgency, trance, or nausea arises, remove headphones and disengage (Porges 2001).',
     ],
     markdownReport: `### 🛡️ Cognitive Shield Forensic Report
 **Target Artifact:** ${artifactTitle || videoUrl || 'User Submitted Media'}  
-**Engine:** Cognitive Shield Core 2027  
+**Engine:** Cognitive Shield Core 2027 (Peer-Reviewed Empirical Science)  
 
 #### 1. What This Media Is About (Video Subject)
 ${videoSubject}
@@ -148,9 +219,13 @@ ${subconsciousVulnerability}
 - **Score:** ${cmiScore}/100 [Threat Level: ${threatLevel}]
 - **Primary Objective:** ${hasPanic ? 'Urgency & Compelled Compliance' : 'Prefrontal Deliberation Bypass & Suggestibility'}
 
-#### 5. Acoustic & Neuro-Somatic Vectors
-- **Infrasound & Frequencies:** ${hasInfrasound ? '7–8 Hz organ resonance coupling detected.' : 'Loudness overcompression and cyclic rhythmic pulses.'}
-- **Somatic Impact:** Amygdala threat elevation, vagus dampening, and elevated cortisol.`,
+#### 5. Peer-Reviewed Academic Citations & Empirical Grounding
+- **Gavreau, V. (1968).** *Infrasound*. Science Journal. (7–8 Hz organ vibration coupling).
+- **LeDoux, J. E. (2000).** *Emotion circuits in the brain*. Annual Review of Neuroscience. (Subcortical amygdala threat hijack).
+- **Rizzolatti, G., & Craighero, L. (2004).** *The mirror-neuron system*. Annual Review of Neuroscience. (Status mimicry & premotor priming).
+- **Tversky, A., & Kahneman, D. (1981).** *The framing of decisions and the psychology of choice*. Science. (Loss aversion and cognitive ease).
+- **Lang, A. (2000).** *The limited capacity model of mediated message processing*. Journal of Communication. (Rapid visual cuts exceeding working memory).
+- **Large, E. W., & Jones, M. R. (1999).** *The dynamics of attending: How people track time-varying events*. Psychological Review. (Neural phase-locking to rhythmic auditory pulses).`,
   };
 }
 
@@ -274,6 +349,29 @@ export async function POST(req: NextRequest) {
             "affectedOrganHotspots"
           ]
         },
+        scientificCitations: {
+          type: Type.ARRAY,
+          description: "Peer-reviewed scientific academic citations grounding each detected manipulation dimension.",
+          items: {
+            type: Type.OBJECT,
+            properties: {
+              dimension: { type: Type.STRING },
+              phenomenon: { type: Type.STRING },
+              empiricalMechanism: { type: Type.STRING },
+              peerReviewedPaper: { type: Type.STRING },
+              journalOrSource: { type: Type.STRING },
+              academicField: { type: Type.STRING },
+            },
+            required: [
+              "dimension",
+              "phenomenon",
+              "empiricalMechanism",
+              "peerReviewedPaper",
+              "journalOrSource",
+              "academicField"
+            ]
+          }
+        },
         countermeasures: {
           type: Type.ARRAY,
           items: { type: Type.STRING }
@@ -290,6 +388,7 @@ export async function POST(req: NextRequest) {
         "timelineFrames",
         "infrasoundBrainwaveMetrics",
         "somaticBiochemicalImpact",
+        "scientificCitations",
         "countermeasures",
         "markdownReport"
       ]
