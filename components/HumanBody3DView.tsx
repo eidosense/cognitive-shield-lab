@@ -131,10 +131,10 @@ export default function HumanBody3DView({
       }
     })();
 
-    // 2. Pure Black GitHub Deep Canvas
+    // 2. Clean Modern Scientific Laboratory Canvas
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x010409);
-    scene.fog = new THREE.FogExp2(0x010409, 0.035);
+    scene.background = new THREE.Color(0xf8fafc);
+    scene.fog = new THREE.FogExp2(0xf8fafc, 0.025);
     sceneRef.current = scene;
 
     // 3. Camera Setup
@@ -150,7 +150,7 @@ export default function HumanBody3DView({
     renderer.setSize(width, height);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2;
+    renderer.toneMappingExposure = 1.1;
     renderer.setPixelRatio(isSoftwareGl ? 1 : Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = !isSoftwareGl;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -162,15 +162,15 @@ export default function HumanBody3DView({
     scene.environment = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
     pmremGenerator.dispose();
 
-    const ambientLight = new THREE.HemisphereLight(0x58a6ff, 0x010409, 1.5);
+    const ambientLight = new THREE.HemisphereLight(0xffffff, 0xe2e8f0, 2.0);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xf0f6fc, 2.5);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
     keyLight.position.set(5, 8, 5);
     keyLight.castShadow = !isSoftwareGl;
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight(0x238636, 1.5);
+    const rimLight = new THREE.DirectionalLight(0x3b82f6, 1.2);
     rimLight.position.set(-5, -2, -4);
     scene.add(rimLight);
 
@@ -226,13 +226,13 @@ export default function HumanBody3DView({
 
     // Translucent Human Glass Silhouette
     const bodyMat = new THREE.MeshPhysicalMaterial({
-      color: 0x58a6ff,
-      metalness: 0.15,
-      roughness: 0.1,
-      transmission: 0.88,
-      thickness: 1.2,
+      color: 0x93c5fd,
+      metalness: 0.1,
+      roughness: 0.15,
+      transmission: 0.85,
+      thickness: 1.1,
       transparent: true,
-      opacity: 0.35,
+      opacity: 0.5,
     });
 
     // Anatomical Silhouette
@@ -558,28 +558,28 @@ export default function HumanBody3DView({
   };
 
   return (
-    <div className="relative w-full h-[560px] rounded-xl overflow-hidden border border-[#30363d] bg-[#010409]">
+    <div className="relative w-full h-[520px] rounded-2xl overflow-hidden border border-slate-200/90 bg-slate-50 shadow-xs">
       {/* 3D Canvas Container */}
       <div ref={containerRef} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing" />
 
       {/* Frame Status Overlay */}
-      <div className="absolute top-4 left-4 z-10 flex flex-col gap-1.5 pointer-events-none">
+      <div className="absolute top-4 left-4 z-10 flex flex-col gap-2 pointer-events-none">
         <div className="flex items-center gap-2">
-          <span className="px-2.5 py-1 rounded bg-[#0d1117] border border-[#30363d] text-xs font-mono text-[#58a6ff] font-bold">
+          <span className="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-xs font-mono text-blue-700 font-semibold shadow-xs">
             {currentFrame ? currentFrame.timestamp : '00:00s'}
           </span>
-          <span className={`px-2.5 py-1 rounded text-xs font-mono font-bold border ${currentFrame && currentFrame.severity >= 7 ? 'bg-[#f85149]/20 text-[#f85149] border-[#f85149]/40' : currentFrame && currentFrame.severity >= 4 ? 'bg-[#d29922]/20 text-[#d29922] border-[#d29922]/40' : 'bg-[#3fb950]/20 text-[#3fb950] border-[#3fb950]/40'}`}>
+          <span className={`px-2.5 py-1 rounded-lg text-xs font-mono font-semibold border shadow-xs ${currentFrame && currentFrame.severity >= 7 ? 'bg-rose-50 text-rose-700 border-rose-200' : currentFrame && currentFrame.severity >= 4 ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'}`}>
             {currentFrame ? `TARGET: ${currentFrame.targetOrgan.toUpperCase()}` : `CMI ${cmiScore}/100`}
           </span>
         </div>
 
         {currentFrame && (
-          <div className="bg-[#0d1117]/90 border border-[#30363d] p-2.5 rounded-lg max-w-sm text-xs font-mono backdrop-blur-sm">
-            <div className="text-[#f85149] font-bold flex items-center gap-1.5">
+          <div className="bg-white/95 border border-slate-200 p-3 rounded-xl max-w-sm text-xs shadow-md backdrop-blur-sm">
+            <div className="text-rose-600 font-semibold flex items-center gap-1.5">
               <Zap className="w-3.5 h-3.5" /> {currentFrame.detectedMechanism}
             </div>
-            <div className="text-[#8b949e] text-[11px] mt-1">
-              Impact: <strong className="text-[#c9d1d9]">{currentFrame.biochemicalSomaticImpact}</strong>
+            <div className="text-slate-600 text-[11px] mt-1">
+              Impact: <strong className="text-slate-900">{currentFrame.biochemicalSomaticImpact}</strong>
             </div>
           </div>
         )}
@@ -587,21 +587,23 @@ export default function HumanBody3DView({
 
       {/* Frame Scrubber Timeline (Bottom Dock) */}
       {timelineFrames.length > 0 && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 w-[95%] max-w-2xl flex flex-col gap-2 p-2.5 rounded-xl bg-[#0d1117]/95 border border-[#30363d] shadow-2xl">
-          <div className="flex items-center justify-between text-xs font-mono px-1">
-            <span className="text-[#8b949e] flex items-center gap-1">
-              <Clock className="w-3.5 h-3.5 text-[#58a6ff]" /> Second-by-Second Frame Timeline
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 w-[94%] max-w-xl flex flex-col gap-2 p-2.5 rounded-xl bg-white/95 border border-slate-200 shadow-xl backdrop-blur-sm">
+          <div className="flex items-center justify-between text-xs font-medium text-slate-700 px-1">
+            <span className="flex items-center gap-1.5 text-slate-600">
+              <Clock className="w-3.5 h-3.5 text-blue-600" /> Second-by-Second Scrubber
             </span>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setIsPaused(!isPaused)}
-                className="p-1 rounded text-[#8b949e] hover:text-white transition-colors cursor-pointer"
+                className="p-1 rounded text-slate-500 hover:text-slate-900 transition-colors cursor-pointer"
+                title={isPaused ? "Play" : "Pause"}
               >
-                {isPaused ? <Play className="w-3.5 h-3.5 text-[#3fb950]" /> : <Pause className="w-3.5 h-3.5 text-[#e3b341]" />}
+                {isPaused ? <Play className="w-3.5 h-3.5 text-emerald-600" /> : <Pause className="w-3.5 h-3.5 text-amber-600" />}
               </button>
               <button
                 onClick={toggleWireframe}
-                className={`p-1 rounded transition-colors cursor-pointer ${wireframeMode ? 'text-[#58a6ff]' : 'text-[#8b949e] hover:text-white'}`}
+                className={`p-1 rounded transition-colors cursor-pointer ${wireframeMode ? 'text-blue-600' : 'text-slate-400 hover:text-slate-700'}`}
+                title="Toggle Wireframe"
               >
                 <RotateCw className="w-3.5 h-3.5" />
               </button>
@@ -609,18 +611,18 @@ export default function HumanBody3DView({
           </div>
 
           {/* Timeline Nodes */}
-          <div className="flex items-center gap-1.5 overflow-x-auto py-1 px-1">
+          <div className="flex items-center gap-1.5 overflow-x-auto py-0.5 px-0.5">
             {timelineFrames.map((frame, idx) => (
               <button
                 key={idx}
                 onClick={() => onSelectFrame && onSelectFrame(idx)}
-                className={`px-2.5 py-1.5 rounded text-xs font-mono flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
+                className={`px-2.5 py-1 rounded-lg text-xs font-mono flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
                   idx === currentFrameIndex
-                    ? 'bg-[#1f6feb] text-white font-bold shadow-md'
-                    : 'bg-[#161b22] text-[#8b949e] hover:text-[#c9d1d9] border border-[#30363d]'
+                    ? 'bg-blue-600 text-white font-semibold shadow-xs'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200'
                 }`}
               >
-                <span className={`w-2 h-2 rounded-full ${frame.severity >= 7 ? 'bg-[#f85149]' : frame.severity >= 4 ? 'bg-[#d29922]' : 'bg-[#3fb950]'}`} />
+                <span className={`w-2 h-2 rounded-full ${frame.severity >= 7 ? 'bg-rose-500' : frame.severity >= 4 ? 'bg-amber-500' : 'bg-emerald-500'}`} />
                 <span>{frame.timestamp}</span>
               </button>
             ))}
